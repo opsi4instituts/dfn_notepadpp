@@ -1,0 +1,38 @@
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib gmbh
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+
+[Actions]
+requiredWinstVersion >= "4.11.4.4"
+
+DefVar $UninstallProgram$
+DefVar $LogDir$
+DefVar $ExitCode$
+DefVar $ProductId$
+DefVar $InstallDir$
+DefVar $CustomPostDeinstall$
+DefVar $ProductName$
+
+Set $LogDir$ = "%opsiLogDir%"
+
+; ----------------------------------------------------------------
+Set $ProductId$		= "notepadpp"
+Set $ProductName$	= "Notepad++"
+Set $InstallDir$	= "%ProgramFiles32Dir%\Notepad++"
+; ----------------------------------------------------------------
+
+comment "Show product picture"
+if (FileExists("%ScriptPath%\..\lib\icons\%installingProdName%.png"))
+	comment "logo at local library/icon found."
+	ShowBitmap "%ScriptPath%\..\lib\icons\%installingProdName%.png" $ProductName$
+else
+	comment "no logo at local library/icon, use from ScriptPath ..."
+	ShowBitmap "%ScriptPath%\o4i.png" $ProductName$
+endif
+Message "Uninstalling " + $ProductId$ + " ..."
+
+if FileExists("%ScriptPath%\delsub32.opsiscript")
+	comment "Start uninstall sub section"
+	Sub "%ScriptPath%\delsub32.opsiscript"
+endif

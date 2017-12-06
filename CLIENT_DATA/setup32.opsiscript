@@ -1,0 +1,148 @@
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+
+[Actions]
+requiredWinstVersion >= "4.11.4.4"
+
+DefVar $UninstallProgram$
+DefVar $LogDir$
+DefVar $ProductId$  
+DefVar $MinimumSpace$
+DefVar $InstallDir$
+DefVar $Setupfile$
+DefVar $InstallSilentOption$
+DefVar $ExitCode$
+DefVar $ProductName$
+DefVar $InstallDirExe$
+DefVar $CustomPostInstall$
+DefVar $CustomPostDeinstall$
+DefVar $Updater$
+DefVar $Language$
+DefVar $LangSourceFile$
+
+Set $Language$ = GetProductProperty("language","auto")
+set $Updater$ = getProductProperty("updater","no")
+
+Set $LogDir$ = "%opsiLogDir%"
+
+Set $ProductId$		= "notepadpp"
+Set $ProductName$	= "Notepad++"
+Set $MinimumSpace$	= "25 MB"
+Set $InstallDir$	= "%ProgramFiles32Dir%\Notepad++"
+Set $InstallDirExe$	= $InstallDir$ + "\notepad++.exe"
+
+Set $InstallSilentOption$ = " /S "
+
+DefVar	$SetupVersion$
+Set $SetupVersion$	= strPart("%installingProdVersion%", "1", calculate(strPos("%installingProdVersion%","-") + "-" + "1" ))
+Set $Setupfile$		= "npp." + $SetupVersion$ + ".Installer.exe"
+; ----------------------------------------------------------------
+
+ChangeDirectory "%SCRIPTPATH%"
+if not(HasMinimumSpace ("%SystemDrive%", $MinimumSpace$))
+        LogError "Not enough space on %SystemDrive%, " + $MinimumSpace$ + " on drive %SystemDrive% needed for " + $ProductId$
+        isFatalError "No Space"
+else
+        comment "Space OK"
+endif
+if not( FileExists($Setupfile$) )
+        LogError "Setupfile NOT exists (" + $Setupfile$ +")"
+        isFatalError "No Setupfile found"
+else
+        comment "Setupfile exists ..."
+endif 
+
+comment "Show product picture"
+if (FileExists("%ScriptPath%\..\lib\icons\%installingProdName%.png"))
+	comment "logo at local library/icon found."
+	ShowBitmap "%ScriptPath%\..\lib\icons\%installingProdName%.png" $ProductName$
+else
+	comment "no logo at local library/icon, use from ScriptPath ..."
+	ShowBitmap "%ScriptPath%\o4i.png" $ProductName$
+endif
+
+if FileExists("%ScriptPath%\delsub32.opsiscript")
+	comment "Start uninstall sub section"
+	Sub "%ScriptPath%\delsub32.opsiscript"
+endif
+
+; Testweise
+; Files_copy_dll
+
+Message "Installing %installingProdName% (%installingProdVersion%) ..."
+comment "Start setup program"
+Winbatch_install
+Sub_check_exitcode
+	
+if ($language$ = "auto")
+	comment "decide which language to use"
+	DefStringList   $LanguageMap$
+	DefVar          $System_Language$
+	set $languagemap$ = GetLocaleInfoMap
+	set  $system_language$ = lower(getValue("system_default_language_id", $languagemap$))
+	if $system_language$ = "0407"
+		comment "The detected language code is German"
+		Set $LangSourceFile$ = "german.xml"
+	endif
+	if $system_language$ = "0409"
+		comment "The detected language code is English"
+		Set $LangSourceFile$ = "english.xml"
+	endif
+endif
+if ($language$ = "de")
+	Set $LangSourceFile$ = "german.xml"
+endif
+if ($language$ = "en")
+	Set $LangSourceFile$ = "english.xml"
+endif
+comment "Generating 'nativeLang.xml'"
+Files_copy_lang
+
+if ($Updater$ = "no")
+	comment "Patch XML config file"
+	; Patche die XML im Installationsverzeichnis, dass nicht nach updates gesucht werden soll!
+	; http://coreworx.blogspot.de/2010/07/unattended-installation-notepad.html
+	XMLPatch_config $InstallDir$ + "\config.model.xml"
+	
+	; das Verzeichnis 'updater' im Programmverzeichnis einfach löschen, dann verschwinden auch die Menüeinträge unter 'Hilfe'
+	comment "Remove updater directory"
+	Files_uninstall_updater
+endif
+
+comment "include custom post install file"
+set $CustomPostInstall$ = getProductProperty("custom-post-install","none")
+if not ($CustomPostInstall$ = "none")
+	if FileExists("%ScriptPath%\custom\" + $CustomPostInstall$)
+		include_insert "%ScriptPath%\custom\" + $CustomPostInstall$
+	endif
+endif
+
+[Winbatch_install]
+"%ScriptPath%\$Setupfile$" $InstallSilentOption$
+
+[Files_copy_dll]
+copy "%ScriptPath%\files\" "$InstallDir$"
+
+[Files_copy_lang]
+; etwas umständlich (kopieren und dann umbenennen und verschieben), aber wird von copy imo nicht unterstützt
+copy "$InstallDir$\localization\$LangSourceFile$" "$InstallDir$"
+move "$InstallDir$\$LangSourceFile$" "$InstallDir$\nativeLang.xml"
+
+[Files_uninstall_updater]
+delete -sf "$InstallDir$\updater"
+
+[XMLPatch_config]
+openNodeSet
+	documentroot
+	all_childelements_with:
+	 elementname: "GUIConfigs"
+	all_childelements_with:
+	 elementname: "GUIConfig"
+	 attribute: "name" value="noUpdate"
+end
+SetText "yes"
+
+[Sub_check_exitcode]
+Sub "%ScriptPath%\check_inno-exitcode.opsiscript"

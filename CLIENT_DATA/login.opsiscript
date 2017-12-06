@@ -1,0 +1,21 @@
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib gmbh
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+
+[Actions]
+Message "Profile Patch for Notepad++...."
+
+comment "Did we run this script before ? - and set version stamp in profile"
+if getValue("installationstate", getProductMap) = "installed"
+	comment "Product is installed"
+   	if not (FileExists("%CurrentAppdataDir%\Notepad++\nativeLang.xml"))
+        	Files_copy_lang
+        endif
+endif
+
+[Files_copy_lang]
+; nativeLang.xml wird beim Installieren je nach Produktproperty im Programmverzeichnis angelegt, kommt also nicht von der Softwareinstallation!
+copy "%ProgramFiles32Dir%\Notepad++\nativeLang.xml" "%CurrentAppdataDir%\Notepad++"
+
+

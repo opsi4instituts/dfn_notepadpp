@@ -1,0 +1,37 @@
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib gmbh
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+
+
+Set $UninstallProgram$ = $InstallDir$ + "\uninstall.exe"
+
+Message "Uninstalling " + $ProductId$ + " ..."
+if FileExists($UninstallProgram$)
+	comment "Uninstall program found, starting uninstall"
+	Winbatch_uninstall
+	sub_check_exitcode
+
+	; Installer räumt nicht richtig auf, außerdem muss 'nativeLang.xml' noch entsorgt werden
+	comment "Clean up installdir"
+	Files_uninstall
+
+	comment "include custom post deinstall file"
+	set $CustomPostDeinstall$ = getProductProperty("custom-post-deinstall","none")
+	if not ($CustomPostDeinstall$ = "none")
+		if FileExists("%ScriptPath%\custom\" + $CustomPostDeinstall$)
+			include_insert "%ScriptPath%\custom\" + $CustomPostDeinstall$
+		endif
+	endif
+endif
+killtask "un_a.exe"
+
+[Winbatch_uninstall]
+; === Inno Setup ========================================================================================
+ "$UninstallProgram$" /S
+
+[Files_uninstall]
+delete -sf "$InstallDir$\"
+
+[Sub_check_exitcode]
+Sub "%ScriptPath%\check_inno-exitcode.opsiscript"

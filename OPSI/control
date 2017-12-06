@@ -1,0 +1,168 @@
+[Package]
+version: 1
+depends: 
+incremental: False
+
+[Product]
+type: localboot
+id: dfn_notepadpp
+name: Notepad++
+description: Texteditor optimiert für die Programmierung u.a. mit Syntaxhervorhebung für viele Programmiersprachen und Code-Faltung
+advice: (Krummel: aktualisiert am 06.12.2017)
+version: 7.5.3
+priority: 0
+licenseRequired: False
+productClasses: 
+setupScript: setup32.opsiscript
+uninstallScript: uninstall32.opsiscript
+updateScript: 
+alwaysScript: 
+onceScript: 
+customScript: 
+userLoginScript: login.opsiscript
+
+[ProductProperty]
+type: unicode
+name: custom-post-install
+multivalue: False
+editable: False
+description: Define filename for include script in custom directory after
+ installation
+values: ["none", "post-install.opsiinc"]
+default: ["none"]
+
+[ProductProperty]
+type: unicode
+name: custom-post-deinstall
+multivalue: False
+editable: False
+description: Define filename for include script in custom directory after  deinstallation
+values: ["none", "post-deinstall.opsiinc"]
+default: ["none"]
+
+[ProductProperty]
+type: unicode
+name: language
+multivalue: False
+editable: False
+description: zu installierende Sprache
+values: ["auto", "de", "en"]
+default: ["auto"]
+
+[ProductProperty]
+type: unicode
+name: updater
+multivalue: False
+editable: False
+description: look for updates and inform user?
+values: ["no", "yes"]
+default: ["no"]
+
+[Changelog]
+notepadpp (7.5.3-046)
+
+	* minor update - dll Errors fixed by notapad.org
+	* .exe changed
+
+ -- Detlef Krummel <krummel@gei.de>  06 December 2017
+
+notepadpp (7.5.2-045)
+	* minor update
+	* rm *.png, cp o4i.png
+	* replace $PrettyName$ with $PruductName$
+	* Fehlermeldung Plugin normal: https://notepad-plus-plus.org/news/notepad-7.5-released.html
+	  (deshalb NICHT ausgerollt)
+ -- Detlef Krummel <krummel@gei.de>  28 November 2017
+notepadpp (7.5.1-044)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  30 August 2017
+notepadpp (7.5-043)
+	* major update
+ -- Detlef Krummel <krummel@gei.de>  16 August 2017
+notepadpp (7.4.2-042)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  19 May 2017
+notepadpp (7.4.1-041)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  18 May 2017
+notepadpp (7.4-040)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  15 May 2017
+notepadpp (7.3.3-039)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  09 Mar 2017
+notepadpp (7.3.2-038)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  14 Feb 2017
+notepadpp (7.3.1-037)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  18 Jan 2017
+notepadpp (7.3-036)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  02 Jan 2017
+notepadpp (7.2.2-035)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  28 Nov 2016
+notepadpp (7.2.1-034)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  21 Nov 2016
+notepadpp (7.2-033)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  3 Nov 2016
+notepadpp (7.1-032)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  16 Oct 2016
+notepadpp (7.0-031)
+	* major update 7.x
+	* Umstellung auf 32/64 Bit + *3264.opsiscript
+	* o4i Logo 8/2016
+	* Anzeigen lokales Logo aus %ScriptPath%/../lib/icons/, falls exisitent
+ -- Detlef Krummel <krummel@gei.de>  23 Sep 2016
+notepadpp (6.9.2-030)
+	* minor update
+	* o4i Logo
+ -- Detlef Krummel <krummel@gei.de>  18 May 2016
+notepadpp (6.9.1-029)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  29 Mar 2016
+notepadpp (6.9-028)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  23 Jan 2016
+notepadpp (6.8.9-027)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  12 Jan 2016 07:00:00 +1000
+notepadpp (6.8.8-026)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  10 Dec 2015 07:00:00 +1000
+notepadpp (6.8.5-023)
+	* minor update
+ -- Detlef Krummel <krummel@gei.de>  Mon, 19 Oct 2015 07:00:00 +1000
+notepadpp (6.8.3-022)
+	* Modifications custom dir (moved after successful installation)
+	* fixed minor bugs and typos
+	* Productproperty language added (generating nativeLang.xml in 'localization')
+	* ProductProperty updater added (updater is enabled by default, remove it on no)
+	* added login.opsiscript copying nativeLang.xml (setting default language for user)
+	* aesthetic modification: removed black background from icon
+	* remove installdir and some files on deinstallation (installer & generated 'nativeLang.xml')
+ -- Thomas Besser (archIT/KIT) <thomas.besser@kit.edu>, 10.09.2015
+notepadpp (6.8.3-021) testing; urgency=low
+  * minor Update
+  * Einarbeiten der DIFFs von Thomas.Besser@kit.edu (danke....)
+ -- Detlef Krummel <krummel@gei.de>  Mon, 5 Sep 2015 07:00:00 +1000
+notepadpp (6.8.2-020) testing; urgency=low
+  * InstallDirExe für Thomas
+  * CustomDir
+ -- Detlef Krummel <krummel@gei.de>  Wed, 1 Sep 2015 06:00:00 +1000
+notepadpp (6.8.2-019) testing; urgency=low
+  * Minor Update
+ -- Detlef Krummel <krummel@gei.de>  Wed, 21 Aug 2015 06:00:00 +1000
+notepadpp (6.8.1-018) testing; urgency=low
+  * Minor Update
+ -- Detlef Krummel <krummel@gei.de>  Wed, 4 Aug 2015 06:00:00 +1000
+notepadpp (6.8-017) testing; urgency=low
+  * Minor Update
+ -- Detlef Krummel <krummel@gei.de>  Wed, 22 Jul 2015 05:58:00 +0000
+notepadpp (6.3.3-1) testing; urgency=low
+  * Initial package
+ -- Detlef Krummel <krummel@gei.de>  Wed, 12 Jun 2013 14:56:04 +0000
