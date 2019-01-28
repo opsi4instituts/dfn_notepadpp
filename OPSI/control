@@ -8,8 +8,8 @@ type: localboot
 id: dfn_notepadpp
 name: Notepad++
 description: Texteditor optimiert für die Programmierung u.a. mit Syntaxhervorhebung für viele Programmiersprachen und Code-Faltung
-advice: (Krummel: aktualisiert am 06.12.2017)
-version: 7.5.3
+advice: (aktualisiert am 28.1.2019)
+version: 7.6.3
 priority: 0
 licenseRequired: False
 productClasses: 
@@ -59,13 +59,45 @@ values: ["no", "yes"]
 default: ["no"]
 
 [Changelog]
-notepadpp (7.5.3-046)
+notepadpp (7.6.3-056)
 
+	* minor update, only .exe changed
+
+ -- Detlef Krummel <krummel@gei.de>  28.01.2019
+
+notepadpp (7.6.2-055)
+	* minor update, only .exe changed
+ -- Detlef Krummel <krummel@gei.de>  01.01.2019
+notepadpp (7.6.1-054)
+	* minor update, only .exe changed
+ -- Detlef Krummel <krummel@gei.de>  13.12.2018
+notepadpp (7.6-053)
+	* minor update, only .exe changed
+	* new 04i.png  9/2018
+ -- Detlef Krummel <krummel@gei.de>  14.11.2018
+notepadpp (7.5.9-052)
+	* minor update, only .exe changed
+	* new 04i.png  9/2018
+ -- Detlef Krummel <krummel@gei.de>  15.10.2018
+notepadpp (7.5.8-051)
+	* minor update, only .exe changed
+ -- Detlef Krummel <krummel@gei.de>  24.07.2018
+notepadpp (7.5.7-050)
+	* minor update, only .exe changed
+ -- Detlef Krummel <krummel@gei.de>  02.07.2018
+notepadpp (7.5.6-049)
+	* minor update, only .exe changed
+ -- Detlef Krummel <krummel@gei.de>  20.03.2018
+notepadpp (7.5.5-048)
+	* minor update, only .exe changed
+ -- Detlef Krummel <krummel@gei.de>  28.02.2018
+notepadpp (7.5.4-047)
+	* minor update, only .exe changed
+ -- Detlef Krummel <krummel@gei.de>  01 January 2018
+notepadpp (7.5.3-046)
 	* minor update - dll Errors fixed by notapad.org
 	* .exe changed
-
  -- Detlef Krummel <krummel@gei.de>  06 December 2017
-
 notepadpp (7.5.2-045)
 	* minor update
 	* rm *.png, cp o4i.png
